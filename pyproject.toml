@@ -1,75 +1,72 @@
 [project]
-name = "ComfyUI"
-version = "0.16.4"
-readme = "README.md"
-license = { file = "LICENSE" }
-requires-python = ">=3.10"
-
-[project.urls]
-homepage = "https://www.comfy.org/"
-repository = "https://github.com/comfyanonymous/ComfyUI"
-documentation = "https://docs.comfy.org/"
-
-[tool.ruff]
-lint.select = [
-  "N805", # invalid-first-argument-name-for-method
-  "S307", # suspicious-eval-usage
-  "S102", # exec
-  "E",
-  "T",    # print-usage
-  "W",
-  # The "F" series in Ruff stands for "Pyflakes" rules, which catch various Python syntax errors and undefined names.
-  # See all rules here: https://docs.astral.sh/ruff/rules/#pyflakes-f
-  "F",
-]
-
-lint.ignore = ["E501", "E722", "E731", "E712", "E402", "E741"]
-
-exclude = ["*.ipynb", "**/generated/*.pyi"]
-
-[tool.pylint]
-master.py-version = "3.10"
-master.extension-pkg-allow-list = [
-  "pydantic",
-]
-reports.output-format = "colorized"
-similarities.ignore-imports = "yes"
-messages_control.disable = [
-  "missing-module-docstring",
-  "missing-class-docstring",
-  "missing-function-docstring",
-  "line-too-long",
-  "too-few-public-methods",
-  "too-many-public-methods",
-  "too-many-instance-attributes",
-  "too-many-positional-arguments",
-  "broad-exception-raised",
-  "too-many-lines",
-  "invalid-name",
-  "unused-argument",
-  "broad-exception-caught",
-  "consider-using-with",
-  "fixme",
-  "too-many-statements",
-  "too-many-branches",
-  "too-many-locals",
-  "too-many-arguments",
-  "too-many-return-statements",
-  "too-many-nested-blocks",
-  "duplicate-code",
-  "abstract-method",
-  "superfluous-parens",
-  "arguments-differ",
-  "redefined-builtin",
-  "unnecessary-lambda",
-  "dangerous-default-value",
-  "invalid-overridden-method",
-  # next warnings should be fixed in future
-  "bad-classmethod-argument",  # Class method should have 'cls' as first argument
-  "wrong-import-order",  # Standard imports should be placed before third party imports
-  "ungrouped-imports",
-  "unnecessary-pass",
-  "unnecessary-lambda-assignment",
-  "no-else-return",
-  "unused-variable",
+name = "ace-step-comfyui-server"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    "accelerate>=0.33.0",
+    "aiohttp>=3.11.8",
+    "alembic>=1.18.4",
+    "audiostretchy>=1.3.5",
+    "av>=14.2.0",
+    "bitsandbytes>0.37.0",
+    "blake3>=1.0.8",
+    "cached-path>=1.8.9",
+    "click>=8.3.1",
+    "comfy-aimdo>=0.2.9",
+    "comfy-kitchen>=0.2.7",
+    "comfyui-embedded-docs==0.4.3",
+    "comfyui-frontend-package==1.39.19",
+    "comfyui-workflow-templates==0.9.18",
+    "datasets>=4.8.2",
+    "demucs>=4.0.1",
+    "einops>=0.8.2",
+    "ema-pytorch>=0.5.2",
+    "filelock>=3.25.2",
+    "glfw>=2.10.0",
+    "gradio>=6.9.0",
+    "kornia>=0.7.1",
+    "librosa>=0.11.0",
+    "matplotlib>=3.10.8",
+    "mido>=1.3.3",
+    "numpy>=1.25.0",
+    "omegaconf>=2.3.0",
+    "opencv-python>=4.5.0",
+    "openunmix>=1.3.0",
+    "pedalboard>=0.9.22",
+    "pillow>=12.1.1",
+    "psutil>=7.2.2",
+    "pydantic~=2.0",
+    "pydantic-settings~=2.0",
+    "pydub>=0.25.1",
+    "pygame>=2.6.1",
+    "pygit2>=1.19.1",
+    "pymunk>=6.8.0,<7.0.0",
+    "pyopengl>=3.1.10",
+    "pypinyin>=0.55.0",
+    "pyyaml>=6.0.3",
+    "requests>=2.32.5",
+    "rjieba>=0.2.0",
+    "safetensors>=0.4.2",
+    "scikit-image>=0.26.0",
+    "scipy>=1.17.1",
+    "sentencepiece>=0.2.1",
+    "simpleeval>=1.0.0",
+    "soundfile>=0.13.1",
+    "spandrel>=0.4.2",
+    "sqlalchemy>=2.0.48",
+    "tokenizers>=0.13.3",
+    "tomli>=2.4.0",
+    "torch>=2.10.0",
+    "torch-time-stretch>=1.0.3",
+    "torchaudio>=2.10.0",
+    "torchcodec>=0.10.0",
+    "torchdiffeq>=0.2.5",
+    "torchsde>=0.2.6",
+    "torchvision>=0.25.0",
+    "tqdm>=4.65.0",
+    "transformers>=4.50.3",
+    "vocos>=0.1.0",
+    "wandb>=0.25.1",
+    "x-transformers>=1.31.14",
+    "yarl>=1.18.0",
 ]
