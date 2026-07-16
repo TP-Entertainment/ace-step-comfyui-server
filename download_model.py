@@ -44,7 +44,7 @@ MODELS: Dict[str, ModelInfo] = {
             "resolve/main/split_files/text_encoders/qwen_0.6b_ace15.safetensors"
         ),
         "filename": "qwen_0.6b_ace15.safetensors",
-        "subdir": "modules/comfyui-server/models/text_encoders",
+        "subdir": "models/text_encoders",
         "checksum": "bb32032673ff1cccbaebbbfc421b03c4ae3b8e3d1b46458560d783639616402f",
     },
     "qwen_4b_ace15": {
@@ -53,7 +53,7 @@ MODELS: Dict[str, ModelInfo] = {
             "resolve/main/split_files/text_encoders/qwen_4b_ace15.safetensors"
         ),
         "filename": "qwen_4b_ace15.safetensors",
-        "subdir": "modules/comfyui-server/models/text_encoders",
+        "subdir": "models/text_encoders",
         "checksum": "c98e2d7e3b70627e21d8a233a5f5927738d0a8f539b9bf7d3b83ac36e3e87a6f",
     },
     "ace_1.5_vae": {
@@ -62,7 +62,7 @@ MODELS: Dict[str, ModelInfo] = {
             "resolve/main/split_files/vae/ace_1.5_vae.safetensors"
         ),
         "filename": "ace_1.5_vae.safetensors",
-        "subdir": "modules/comfyui-server/models/vae",
+        "subdir": "models/vae",
         "checksum": "7e2fdeb52ee2b212fb835d95ffb14160309045d0b975477a6cd97118b1370b08",
     },
 }
