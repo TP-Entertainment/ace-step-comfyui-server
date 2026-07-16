@@ -56,6 +56,15 @@ MODELS: Dict[str, ModelInfo] = {
         "subdir": "modules/comfyui-server/models/text_encoders",
         "checksum": "c98e2d7e3b70627e21d8a233a5f5927738d0a8f539b9bf7d3b83ac36e3e87a6f",
     },
+    "ace_1.5_vae": {
+        "url": (
+            "https://huggingface.co/Comfy-Org/ace_step_1.5_ComfyUI_files/"
+            "resolve/main/split_files/vae/ace_1.5_vae.safetensors"
+        ),
+        "filename": "ace_1.5_vae.safetensors",
+        "subdir": "modules/comfyui-server/models/vae",
+        "checksum": "7e2fdeb52ee2b212fb835d95ffb14160309045d0b975477a6cd97118b1370b08",
+    },
 }
 
 
