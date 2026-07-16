@@ -31,6 +31,7 @@ from comfy_execution.progress import get_progress_state
 from comfy_execution.utils import get_executing_context
 from comfy_api import feature_flags
 from app.database.db import init_db, dependencies_available
+from download_model import ensure_models
 
 if __name__ == "__main__":
     #NOTE: These do not do anything on core ComfyUI, they are for custom nodes.
@@ -526,7 +527,7 @@ if __name__ == "__main__":
 
     if args.disable_dynamic_vram:
         logging.warning("Dynamic vram disabled with argument. If you have any issues with dynamic vram enabled please give us a detailed reports as this argument will be removed soon.")
-
+    ensure_models()
     event_loop, _, start_all_func = start_comfyui()
     try:
         x = start_all_func()

@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-import queue
 import hashlib
-import threading
 import logging
 import subprocess
 from pathlib import Path
@@ -17,22 +15,17 @@ class ModelInfo(TypedDict):
 
 
 def file_checksum(path, chunk_size=1 << 23):
-    q = queue.Queue(maxsize=4)  # buffer tối đa 4 chunk (~32MB RAM)
-
-    def reader():
-        with open(path, "rb", buffering=0) as f:
-            for chunk in iter(lambda: f.read(chunk_size), b""):
-                q.put(chunk)
-        q.put(None)  # sentinel
-
-    t = threading.Thread(target=reader, daemon=True)
-    t.start()
-
+    """SHA256 của chunk đầu + chunk cuối (mặc định 8MB mỗi chunk)."""
     h = hashlib.sha256(usedforsecurity=False)
-    while (chunk := q.get()) is not None:
-        h.update(chunk)
-
-    t.join()
+    with open(path, "rb") as f:
+        head = f.read(chunk_size)
+        size = f.seek(0, 2)
+        if size <= chunk_size:
+            h.update(head[:size])
+        else:
+            h.update(head)
+            f.seek(size - chunk_size)
+            h.update(f.read(chunk_size))
     return h.hexdigest()
 
 MODELS: Dict[str, ModelInfo] = {
@@ -43,7 +36,7 @@ MODELS: Dict[str, ModelInfo] = {
         ),
         "filename": "ace_step_1.5_turbo_aio.safetensors",
         "subdir": "models/diffusion_models",
-        "checksum": "67b0f43aa5c51c840bd0228e6a935d8ff416ec87e5df2fc0637da17a561252bc",
+        "checksum": "19495f24a4ec09098932bae74de82a14625c33b7e23198808a16a75fd88bf761",
     }
 }
 
