@@ -29,15 +29,33 @@ def file_checksum(path, chunk_size=1 << 23):
     return h.hexdigest()
 
 MODELS: Dict[str, ModelInfo] = {
-    "diffusion_models": {
+    "acestep_v1.5_xl_turbo_bf16": {
         "url": (
             "https://huggingface.co/Comfy-Org/ace_step_1.5_ComfyUI_files/"
-            "resolve/main/checkpoints/ace_step_1.5_turbo_aio.safetensors"
+            "resolve/main/split_files/diffusion_models/acestep_v1.5_xl_turbo_bf16.safetensors"
         ),
-        "filename": "ace_step_1.5_turbo_aio.safetensors",
+        "filename": "acestep_v1.5_xl_turbo_bf16.safetensors",
         "subdir": "models/diffusion_models",
-        "checksum": "19495f24a4ec09098932bae74de82a14625c33b7e23198808a16a75fd88bf761",
-    }
+        "checksum": "e879038e7b9cbdcf260caf1e01ee1b39625081056ed55b20a6530d57b245c79b",
+    },
+    "qwen_0.6b_ace15": {
+        "url": (
+            "https://huggingface.co/Comfy-Org/ace_step_1.5_ComfyUI_files/"
+            "resolve/main/split_files/text_encoders/qwen_0.6b_ace15.safetensors"
+        ),
+        "filename": "qwen_0.6b_ace15.safetensors",
+        "subdir": "modules/comfyui-server/models/text_encoders",
+        "checksum": "bb32032673ff1cccbaebbbfc421b03c4ae3b8e3d1b46458560d783639616402f",
+    },
+    "qwen_4b_ace15": {
+        "url": (
+            "https://huggingface.co/Comfy-Org/ace_step_1.5_ComfyUI_files/"
+            "resolve/main/split_files/text_encoders/qwen_4b_ace15.safetensors"
+        ),
+        "filename": "qwen_4b_ace15.safetensors",
+        "subdir": "modules/comfyui-server/models/text_encoders",
+        "checksum": "c98e2d7e3b70627e21d8a233a5f5927738d0a8f539b9bf7d3b83ac36e3e87a6f",
+    },
 }
 
 
