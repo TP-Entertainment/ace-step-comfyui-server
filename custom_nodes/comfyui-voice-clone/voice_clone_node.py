@@ -25,6 +25,14 @@ class VoiceClone:
                     "STRING",
                     {"default": "Reference transcript", "multiline": True},
                 ),
+                "guidance_scale": (
+                    "FLOAT",
+                    {"default": 2.0, "min": 0.0, "max": 10.0, "step": 0.1},
+                ),
+                "num_step": (
+                    "INT",
+                    {"default": 32, "min": 1, "max": 128, "step": 1},
+                ),
                 "timeout": (
                     "FLOAT",
                     {"default": 20.0, "min": 1.0, "max": 600.0, "step": 1.0},
@@ -45,6 +53,8 @@ class VoiceClone:
         speech_text: str,
         ref_audio_url: str,
         ref_audio_text: str,
+        guidance_scale: float,
+        num_step: int,
         timeout: float,
     ):
         audio = generate_voice_clone(
@@ -53,6 +63,8 @@ class VoiceClone:
             speech_text=speech_text,
             ref_audio_url=ref_audio_url,
             ref_text=ref_audio_text,
+            guidance_scale=guidance_scale,
+            num_step=num_step,
             timeout=timeout,
         )
         return (audio,)
@@ -65,6 +77,8 @@ class VoiceClone:
         speech_text: str,
         ref_audio_url: str,
         ref_audio_text: str,
+        guidance_scale: float,
+        num_step: int,
         timeout: float,
     ):
         payload = "|".join(
@@ -74,6 +88,8 @@ class VoiceClone:
                 speech_text,
                 ref_audio_url,
                 ref_audio_text,
+                str(guidance_scale),
+                str(num_step),
                 str(timeout),
             ]
         )

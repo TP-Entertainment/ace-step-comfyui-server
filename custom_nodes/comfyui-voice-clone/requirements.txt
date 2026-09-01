@@ -1,4 +1,4 @@
 mutagen
 google-cloud-storage
-librosa
 pydub
+requests

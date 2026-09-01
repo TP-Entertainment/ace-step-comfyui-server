@@ -1,6 +1,10 @@
 import hashlib
 
-from .audio_process_utils import postprocess_generated_audio, preprocess_reference_audio
+from .audio_process_utils import (
+    audio_fingerprint,
+    postprocess_generated_audio,
+    preprocess_reference_audio,
+)
 
 
 class VoiceClonePreprocessRefAudio:
@@ -39,8 +43,8 @@ class VoiceClonePreprocessRefAudio:
     FUNCTION = "preprocess"
     CATEGORY = "audio/voice_clone"
     DESCRIPTION = (
-        "Preprocess reference audio for voice clone: mono, resample, "
-        "optional silence removal, quiet boost, then hard trim to max_duration."
+        "Preprocess reference audio for voice clone: mono, hard trim to max_duration, "
+        "resample, optional silence removal, quiet boost."
     )
 
     def preprocess(
@@ -80,9 +84,7 @@ class VoiceClonePreprocessRefAudio:
     ):
         payload = "|".join(
             [
-                str(audio["sample_rate"]),
-                str(audio["waveform"].shape),
-                str(float(audio["waveform"].sum().item())),
+                audio_fingerprint(audio),
                 str(target_sample_rate),
                 str(max_duration),
                 str(remove_silence),
@@ -181,9 +183,7 @@ class VoiceClonePostprocessAudio:
     ):
         payload = "|".join(
             [
-                str(audio["sample_rate"]),
-                str(audio["waveform"].shape),
-                str(float(audio["waveform"].sum().item())),
+                audio_fingerprint(audio),
                 str(ref_rms),
                 str(remove_silence),
                 str(mid_silence_ms),

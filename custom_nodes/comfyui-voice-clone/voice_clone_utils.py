@@ -169,6 +169,8 @@ def generate_voice_clone(
     speech_text: str,
     ref_audio_url: str,
     ref_text: str,
+    guidance_scale: float = 2.0,
+    num_step: int = 32,
     timeout: float = 20.0,
 ) -> dict:
     ref_audio_for_api, ref_duration_sec = _prepare_ref_audio_url(ref_audio_url)
@@ -189,6 +191,10 @@ def generate_voice_clone(
                     "text": ref_text_for_api,
                 }
             ],
+            "extra_params": {
+                "guidance_scale": float(guidance_scale),
+                "num_step": int(num_step),
+            },
         },
         headers=headers,
         timeout=timeout,

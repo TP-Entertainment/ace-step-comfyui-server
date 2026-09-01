@@ -4,9 +4,28 @@ from __future__ import annotations
 
 import numpy as np
 import torch
-import librosa
+import torchaudio
 from pydub import AudioSegment
 from pydub.silence import detect_leading_silence, split_on_silence
+
+
+def audio_fingerprint(audio: dict) -> str:
+    waveform = audio["waveform"]
+    if isinstance(waveform, torch.Tensor):
+        flat = waveform.reshape(-1)
+        numel = flat.numel()
+        if numel == 0:
+            samples = "empty"
+        else:
+            samples = f"{flat[0].item()}|{flat[numel // 2].item()}|{flat[-1].item()}"
+    else:
+        arr = np.asarray(waveform).reshape(-1)
+        numel = arr.size
+        if numel == 0:
+            samples = "empty"
+        else:
+            samples = f"{arr[0]}|{arr[numel // 2]}|{arr[-1]}"
+    return f"{audio['sample_rate']}|{tuple(waveform.shape)}|{numel}|{samples}"
 
 
 def comfy_audio_to_numpy(audio: dict) -> tuple[np.ndarray, int]:
@@ -25,6 +44,14 @@ def numpy_to_comfy_audio(waveform: np.ndarray, sample_rate: int) -> dict:
         waveform = waveform[np.newaxis, :]
     tensor = torch.from_numpy(waveform.astype(np.float32, copy=False)).unsqueeze(0)
     return {"waveform": tensor, "sample_rate": int(sample_rate)}
+
+
+def _resample(wav: np.ndarray, orig_sr: int, target_sr: int) -> np.ndarray:
+    if orig_sr == target_sr:
+        return wav
+    tensor = torch.from_numpy(wav)
+    resampled = torchaudio.functional.resample(tensor, orig_sr, target_sr)
+    return resampled.numpy()
 
 
 def _numpy_to_audiosegment(audio: np.ndarray, sample_rate: int) -> AudioSegment:
@@ -80,9 +107,10 @@ def remove_silence(
             keep_silence=mid_sil,
             seek_step=10,
         )
-        wave = AudioSegment.silent(duration=0)
-        for seg in non_silent_segs:
-            wave += seg
+        if non_silent_segs:
+            wave = sum(non_silent_segs[1:], non_silent_segs[0])
+        else:
+            wave = AudioSegment.silent(duration=0)
 
     wave = _remove_silence_edges(wave, lead_sil, trail_sil, -50)
     return _audiosegment_to_numpy(wave)
@@ -145,8 +173,11 @@ def preprocess_reference_audio(
     if wav.shape[0] > 1:
         wav = np.mean(wav, axis=0, keepdims=True)
 
+    # Trim first so resample/silence removal only run on the kept segment.
+    wav = trim_to_max_duration(wav, sr, max_duration)
+
     if sr != target_sample_rate:
-        wav = librosa.resample(wav, orig_sr=sr, target_sr=target_sample_rate)
+        wav = _resample(wav, sr, target_sample_rate)
         sr = target_sample_rate
 
     ref_rms = float(np.sqrt(np.mean(wav**2)))
@@ -167,7 +198,6 @@ def preprocess_reference_audio(
                 "Disable remove_silence or use different source audio."
             )
 
-    wav = trim_to_max_duration(wav, sr, max_duration)
     return numpy_to_comfy_audio(wav, sr), ref_rms
 
 
